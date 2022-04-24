@@ -5,13 +5,22 @@
 class Ize < Formula
   desc "IZE is an opinionated infrastructure wrapper that allows to use multiple tools in one infra"
   homepage "https://ize.sh/"
-  version "0.0.2"
-  license "Apache 2.0"
+  version "0.0.11"
+  license "MIT"
+  depends_on :macos
 
   on_macos do
+    if Hardware::CPU.arm?
+      url "https://github.com/kobrikx/test/releases/download/0.0.11/ize_0.0.11_darwin_arm64.tar.gz", :using => CurlDownloadStrategy
+      sha256 "1f4abc6444d177927f8e9d9eab59a056d92ce40dd5edb38c0673724f6f8d9a7b"
+
+      def install
+        bin.install "ize"
+      end
+    end
     if Hardware::CPU.intel?
-      url "https://github.com/kobrikx/test/releases/download/0.0.2/ize_0.0.2_darwin_amd64.tar.gz", :using => CurlDownloadStrategy
-      sha256 "88d2a565122c96242dbad6e73103289e3e9d6f557de81942de4cae43f0112d76"
+      url "https://github.com/kobrikx/test/releases/download/0.0.11/ize_0.0.11_darwin_amd64.tar.gz", :using => CurlDownloadStrategy
+      sha256 "1aee4356dbebaa6b17553c37f872cfebccff6fec6676ce003ae8da9c0594b90b"
 
       def install
         bin.install "ize"
@@ -19,16 +28,7 @@ class Ize < Formula
     end
   end
 
-  on_linux do
-    if Hardware::CPU.intel?
-      url "https://github.com/kobrikx/test/releases/download/0.0.2/ize_0.0.2_linux_amd64.tar.gz", :using => CurlDownloadStrategy
-      sha256 "e37588f0cd3ef8dbaf0293837edb00ae27074785eff329423915655e22d96e8e"
-
-      def install
-        bin.install "ize"
-      end
-    end
-  end
+  conflicts_with "ize-dev"
 
   test do
     system "#{bin}/ize"
